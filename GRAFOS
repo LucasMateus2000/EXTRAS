@@ -1,0 +1,166 @@
+from grafo import Grafo
+
+def vertices_nao_adjacentes(vertices,arestas):
+    l = []
+    l2 = vertices_adjacentes(arestas)
+    l3 = []
+    for j in vertices:
+        for i in range(len(vertices)):
+            if j != vertices[i]:
+                l.append(sorted([j, vertices[i]]))
+    for a in l:
+        if a not in l2 and a not in l3:
+            l3.append(a)
+    return l3
+
+def vert_igual(aresta):
+    for i in aresta.values():
+        i=i.split("-")
+        if i[0]==i[1]:
+            return True
+        else:
+            pass
+
+
+def arestas_paralelas(vertices):
+    l = vertices_adjacentes(vertices)
+    for j in l:
+        if l.count(j) > 1:
+            return True
+
+def get_Grau(aresta):
+    #eu irei escolher um vertice e fazer a verificação de quantas arestas incidem sobre esse vertice de forma que eu pegarei esse vertice
+    #verificarei de forma sequencial com todas as arestas por exemplo: tenho o vertice C vou ver todas as arests que contem o vertice C
+    cnt = 0
+    lista = []
+    vertice = input()
+    for i in aresta.values():
+        homi = i.split("-")
+        for j in homi:
+            lista.append(j)
+
+    if vertice not in lista:
+        print("Não existe esse vertice")
+        return -1
+    for i in aresta.values():
+        i=i.split("-")
+        if i[0]==vertice and i[1]!=vertice:
+            cnt+=1
+        elif i[0]!=vertice and i[1]==vertice:
+            cnt+=1
+        elif i[0]==vertice and i[1]==vertice:
+            cnt+=1
+
+    return cnt
+
+def arestas_incidem(vertice,arestas):   #esta função verifica as arestas que incidem no dado vértice
+    for a,b in arestas.items():
+        i = b.split("-")
+        if vertice in i:   #se o vértice esta em um valor do dicionário, quer dizer que a aresta, que denomina a chave, incide no vértice
+            print(a)
+
+def grafo_completo(vertices,arestas):    #esta função verifica se o grafo é completo
+    lista = vertices_nao_adjacentes(vertices, arestas)
+    if lista==[]:
+        return True
+    else:
+        return False
+
+def VERIFY_ENTER_V(l = []):
+    for i in l:
+        if "-" in i or "(" in i or ")" in i or " " in i:
+            print("Você digitou um caractere inválido!")
+            return False
+
+def vertices_adjacentes(arestas):
+    l = []
+    for i in arestas.values():
+        i = i.split("-")
+        l.append(sorted(i))
+    return l
+
+def matriz_incidencia(vertices, arestas):
+    for i in vertices:
+        for j in arestas:
+            print(j, end=" ")
+        print(i+"\n")
+
+
+def main():
+
+    print("#############################################################\n"
+          "Digite os vertices para construcao do grafo no seguinte formato (A, B, C, D): \n"
+          "Os vértices não podem incluir os caracteres “-”, “(“, “)” e “ “.")
+    vertices = input().split(", ")
+    if VERIFY_ENTER_V(vertices) == False:
+        main()
+    print("Digite os nomes das arestas, seguido dos nomes dos vértices que ela conecta.\n"
+          "Siga o seguinte formato:  aresta(v1-v2)")
+    arestas = input().split(", ")
+    A = []
+    for i in arestas:
+        i = i.replace(")", "").split("(")
+        A.append(i)
+    try:
+        arestas = dict(A)
+    except ValueError:
+        print("Erro de valores!")
+        main()
+    try :
+        g = Grafo(vertices, arestas)
+        return vertices,arestas,g
+    except:
+        print("ERRO RAPAZ TENTA DE NOVO!")
+        main()
+
+
+vertices,arestas,g = main()
+print("Seu grafo: ",g)
+opc = 0
+while opc!="-1":
+    print("##########################\n"
+          "Digite o que deseja fazer:\n"
+          "1. Encontre todos os pares de vértices não adjacentes.\n"
+          "2. Há algum vértice adjacente a ele mesmo?\n"
+          "3. Há arestas paralelas?\n"
+          "4. Qual grau do vértice?\n"
+          "5. Quais arestas incidem sobre o vértice?\n"
+          "6. Esse grafo é completo?\n"
+          "-1. SAIR!")
+    opc = input()
+    if opc=="1":
+        l3 = vertices_nao_adjacentes(vertices, arestas)
+        for i in l3:
+            print(i)
+    if opc=="2":
+        if vert_igual(arestas)== True:
+            print("Sim!")
+        else:
+            print("Nao!")
+    if opc=="3":
+        if arestas_paralelas(arestas)==True:
+            print("Sim!")
+        else:
+            print("Não!")
+    if opc=="4":
+        print("Escolha o vertice: ")
+        grau = get_Grau(arestas)
+        if grau==0:
+            print(1)
+        elif grau == -1:
+            pass
+        else:
+            print(grau)
+    if opc == "5":
+        arestas_incidem(vertices, arestas)
+    if opc == "6":
+        if grafo_completo(vertices, arestas) == True:
+            print("Sim!")
+        else:
+            print("Não!")
+
+    if opc=="-1":
+        print("VALEU ATÉ A PROXIMA XD")
+
+#J, C, E, P, M, T, Z
+#a1(J-C), a2(C-E), a3(C-E), 4(C-P), a5(C-P), a6(C-M), a7(C-T), a8(M-T), a9(T-Z)
