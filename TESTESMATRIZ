@@ -1,0 +1,75 @@
+def matriz_incidencia(vertices, arestas):
+    lista = []
+    matriz = []
+    for i in vertices:
+        for j in arestas.values():
+            if i in j:
+                lista.append(1)
+            j = j.split("-")
+            if j[0]==j[1]:
+                lista.append(2)
+            else:
+                lista.append(3)
+        print(lista, end=" ")
+        print("\n")
+        matriz.append(lista)
+
+def matriz_incidencias(vertices,arestas):
+    matriz = []
+    pega_A(arestas)
+
+    for i in vertices:
+
+        l = []
+        for j in arestas.values():
+            j = j.split("-")
+            if i == j[0] and i == j[1]:
+                l.append("2 ")
+            elif i in j:
+                l.append("1 ")
+            else:
+                l.append("0 ")
+        matriz.append(l)
+
+    return matriz
+
+
+arestas = "a1(J-C), a2(C-E), a3(C-E), a4(C-P), a5(C-P), a6(C-M), a7(C-T), a8(M-T), a9(T-Z)"
+vertices = "J", "C", "E", "P", "M", "T", "Z"
+
+def pega_A(arestas):
+    new_Aresta = []
+    for i in arestas:
+        new_i= i.replace(")","")
+        new_i = i.split("(")
+        new_Aresta.append(new_i[0])
+        sorted(new_Aresta)
+    return new_Aresta
+arestas = arestas.split(", ")
+A = []
+for i in arestas:
+    i = i.replace(")", "").split("(")
+    A.append(i)
+try:
+    arestas = dict(A)
+except ValueError:
+    print("Erro de valores!")
+matriz = matriz_incidencias(vertices,arestas)
+cnt = 0
+pega_A(arestas)
+print(end="  ")
+for pica in pega_A(arestas):
+    print(pica, end=" ")
+print("\n")
+cnt=0
+for k in matriz:
+    print(vertices[cnt],end="  ")
+    cnt+=1
+    for j in k:
+        print(j, end=" ")
+
+    print("\n")
+
+def descobre_completo(matriz):
+    for i in matriz:
+        matriz[]
