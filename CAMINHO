@@ -1,0 +1,45 @@
+
+arestas = "a1(J-C), a2(C-E), a3(C-E), a4(C-P), a5(C-P), a6(C-M), a7(C-T), a8(M-T), a9(T-Z)"
+vertices = ["J", "C", "E", "P", "M", "T", "Z"]
+arestas = arestas.split(", ")
+A = []
+for i in arestas:
+    i = i.replace(")", "").split("(")
+    A.append(i)
+try:
+    arestas = dict(A)
+except ValueError:
+    print("Erro de valores!")
+matriz = []
+
+for i in range(len(vertices)):
+    lista=[]
+    for j in range(len(vertices)):
+        newAresta=(str(vertices[i])+"-"+str(vertices[j]))
+
+        if newAresta in list(arestas.values()):
+            lista.append(int(1))
+        else:
+            lista.append(int(0))
+
+
+    matriz.append(lista)
+
+for k in range(len(vertices)):
+    for m in range(len(vertices)):
+        if m < k:
+            matriz[k][m] = '-'
+
+print(matriz)
+
+def imprime_matriz(matriz):
+    print(" ",end="  ")
+    for k in range(len(vertices)):
+        print(vertices[k], end="  ")
+    print("\n")
+    for m,i in enumerate(matriz):
+        print(vertices[m],end="  ")
+        for j in i:
+            print(j, end="  ")
+        print("\n")
+imprime_matriz(matriz)
