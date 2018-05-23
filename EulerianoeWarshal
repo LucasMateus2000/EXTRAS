@@ -1,0 +1,29 @@
+def warshall(matriz = []):
+    E = matriz.copy()
+    for i in range(len(vertices)):
+        for j in range(len(vertices)):
+            if E[j][i] != 0:
+                for k in range(len(vertices)):
+                    E[j][k] = max(E[j][k], E[i][k])
+    return E
+
+def CaminhoEuleriano():
+    v_impares = 0
+    for i in vertices:
+        if grau_do_vertice(i) % 2 != 0:
+            v_impares += 1
+    if (v_impares == 2 or v_impares == 0) and ver_conexo() == True:
+        for i in vertices:
+            ver2 = vertices_adjacentes().copy()
+            l = [i]
+            for j in l:
+                for k in vertices:
+                    if sorted([j, k]) in ver2:
+                        l.append(k)
+                        ver2.remove(sorted([j, k]))
+                        break
+            print(l)
+            if len(l) == len(arestas)+1:
+                print("Caminho Euleriano:", str(l).replace('[', '').replace(']', '').replace("'", '').replace(", ", '-'))
+    else:
+        print("Não existe um caminho euleriano")
